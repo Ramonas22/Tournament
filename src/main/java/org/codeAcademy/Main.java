@@ -1,5 +1,6 @@
 package org.codeAcademy;
 
+import org.codeAcademy.services.PlayerServices;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -10,5 +11,8 @@ public class Main {
         SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
 
+        //Testing
+        PlayerServices playerServices = new PlayerServices();
+        playerServices.getPlayerPool(session);
     }
 }

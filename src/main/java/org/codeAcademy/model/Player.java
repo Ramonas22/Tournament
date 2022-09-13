@@ -21,6 +21,15 @@ public class Player {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "position")
+    private position position;
+
+    @Column(name = "sign_contract")
+    private boolean signContract = false;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
@@ -58,5 +67,37 @@ public class Player {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public org.codeAcademy.model.position getPosition() {
+        return position;
+    }
+
+    public void setPosition(org.codeAcademy.model.position position) {
+        this.position = position;
+    }
+
+    public boolean isSignContract() {
+        return signContract;
+    }
+
+    public void setSignContract(boolean signContract) {
+        this.signContract = signContract;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
