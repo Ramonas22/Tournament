@@ -4,7 +4,6 @@ import org.codeAcademy.model.Player;
 import org.codeAcademy.model.position;
 import org.hibernate.Session;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,10 +35,9 @@ public class PlayerServices {
         String formatedDate = formatter.format(todayDate);
         Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(formatedDate);
 
-
         player.setAge((int) TimeUnit.DAYS.convert(Math.abs(
                 date1.getTime() - player.getDateOfBirth().getTime()
-        ), TimeUnit.MILLISECONDS)/365);
+        ), TimeUnit.MILLISECONDS) / 365);
 
         pickPlayerRole(player, false);
 
@@ -49,7 +47,7 @@ public class PlayerServices {
         session.getTransaction().commit();
     }
 
-    public List<Player> getPlayerPool(Session session){
+    public List<Player> getPlayerPool(Session session) {
         return session.createQuery("from Player").list();
     }
 
@@ -60,27 +58,26 @@ public class PlayerServices {
         Player playerTemp;
         int temp;
 
-        while(true){
+        while (true) {
             playerList = getPlayerPool(session);
             System.out.println("Pick player from list which information needs to be updated");
 
             printPlayerPool(playerList);
 
-            System.out.println("Enter " + (playerList.size()+1) + " to EXIT");
-            temp = scanner.nextInt()-1;
+            System.out.println("Enter " + (playerList.size() + 1) + " to EXIT");
+            temp = scanner.nextInt() - 1;
 
-            if(temp >= 0 && temp < playerList.size()){
+            if (temp >= 0 && temp < playerList.size()) {
                 playerTemp = playerList.get(temp);
-                updateInfo(playerTemp ,session);
-            }else if(temp == playerList.size()){
+                updateInfo(playerTemp, session);
+            } else if (temp == playerList.size()) {
                 break;
-            }else {
+            } else {
                 System.out.println("Entered number out of range pick another one");
             }
 
         }
     }
-
 
 
     private void updateInfo(Player playerTemp, Session session) throws ParseException {
@@ -98,80 +95,81 @@ public class PlayerServices {
             System.out.println("[ 6 ] Exit without update");
             temp = scanner.nextInt() - 1;
 
-            switch (temp){
-                case 0:{
+            switch (temp) {
+                case 0 -> {
                     System.out.println("Enter name ");
-                    playerTemp.setName(scanner.next());
+                    playerTemp.setName(scanner.nextLine());
                     temp = -1;
                     break;
                 }
-                case 1:{
+                case 1 -> {
                     System.out.println("Enter surname");
-                    playerTemp.setSurname(scanner.next());
+                    playerTemp.setSurname(scanner.nextLine());
                     temp = -1;
                     break;
                 }
-                case 2:{
+                case 2 -> {
                     System.out.println("Enter player date of birth yyyy-MM-dd");
                     playerTemp.setDateOfBirth(new SimpleDateFormat("yyyy-MM-dd").parse(scanner.next()));
 
                     Date todayDate = Date.from(java.time.ZonedDateTime.now().toInstant());
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String formatedDate = formatter.format(todayDate);
-                    Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(formatedDate);
+                    Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(formatedDate);
 
                     playerTemp.setAge((int) TimeUnit.DAYS.convert(Math.abs(
                             date1.getTime() - playerTemp.getDateOfBirth().getTime()
-                    ), TimeUnit.MILLISECONDS)/365);
+                    ), TimeUnit.MILLISECONDS) / 365);
 
                     temp = -1;
                     break;
                 }
-                case 3:{
-                    pickPlayerRole(playerTemp,true);
+                case 3 -> {
+                    pickPlayerRole(playerTemp, true);
                     temp = -1;
                     break;
                 }
-                case 4:{
+                case 4 -> {
                     session.beginTransaction();
                     session.update(playerTemp);
                     session.getTransaction().commit();
                     break;
                 }
-                case 5:{
+                case 5 -> {
+                    playerTemp = player;
                     break;
                 }
-                default : {
+                default -> {
                     System.out.println("Entered index out of bounds try again ");
                     temp = -1;
                 }
             }
 
-        }while (temp == -1);
+        } while (temp == -1);
     }
 
     private Player pickPlayerRole(Player player, boolean update) {
         Scanner scanner = new Scanner(System.in);
         int temp;
 
-        if(update){
-        System.out.println("[ 1 ] " + position.POINT_GUARD);
-        System.out.println("[ 2 ] " + position.SHOOTING_GUARD);
-        System.out.println("[ 3 ] " + position.SMALL_FORWARD);
-        System.out.println("[ 4 ] " + position.POWER_FORWARD);
-        System.out.println("[ 5 ] " + position.CENTER);
-        temp = scanner.nextInt() - 1;
-        if (temp >= 0 && temp < 5) {
-            switch (temp) {
-                case 0 -> player.setPosition(position.POINT_GUARD);
-                case 1 -> player.setPosition(position.SHOOTING_GUARD);
-                case 2 -> player.setPosition(position.SMALL_FORWARD);
-                case 3 -> player.setPosition(position.POWER_FORWARD);
-                case 4 -> player.setPosition(position.CENTER);
-                default -> System.out.println("Index out of bounds, position will stay un changed");
+        if (update) {
+            System.out.println("[ 1 ] " + position.POINT_GUARD);
+            System.out.println("[ 2 ] " + position.SHOOTING_GUARD);
+            System.out.println("[ 3 ] " + position.SMALL_FORWARD);
+            System.out.println("[ 4 ] " + position.POWER_FORWARD);
+            System.out.println("[ 5 ] " + position.CENTER);
+            temp = scanner.nextInt() - 1;
+            if (temp >= 0 && temp < 5) {
+                switch (temp) {
+                    case 0 -> player.setPosition(position.POINT_GUARD);
+                    case 1 -> player.setPosition(position.SHOOTING_GUARD);
+                    case 2 -> player.setPosition(position.SMALL_FORWARD);
+                    case 3 -> player.setPosition(position.POWER_FORWARD);
+                    case 4 -> player.setPosition(position.CENTER);
+                    default -> System.out.println("Index out of bounds, position will stay un changed");
+                }
             }
-        }
-        }else {
+        } else {
             do {
                 System.out.println("Pick position for player");
                 System.out.println("[ 1 ] " + position.POINT_GUARD);
@@ -197,22 +195,22 @@ public class PlayerServices {
         return player;
     }
 
-    public void printPlayerPool(List<Player> playerList){
+    public void printPlayerPool(List<Player> playerList) {
         Player playerTemp;
 
         for (int i = 0; i < playerList.size(); i++) {
             playerTemp = playerList.get(i);
-            System.out.print("[ " + (i+1) + " ] " + playerTemp.getName() + " "
-                    + playerTemp.getSurname() + " " + playerTemp.getAge() +" "+ playerTemp.getPosition());
-            if(playerTemp.isSignContract()){
+            System.out.print("[ " + (i + 1) + " ] " + playerTemp.getName() + " "
+                    + playerTemp.getSurname() + " " + playerTemp.getAge() + " " + playerTemp.getPosition());
+            if (playerTemp.isSignContract()) {
                 System.out.print(" player has contract\n");
-            }else {
+            } else {
                 System.out.print(" player is open for proposal\n");
             }
         }
     }
 
-    public void removePlayerFromThePool(Session session){
+    public void removePlayerFromThePool(Session session) {
         Scanner scanner = new Scanner(System.in);
 
         List<Player> playerList = getPlayerPool(session);
@@ -221,15 +219,15 @@ public class PlayerServices {
         while (true) {
             System.out.println("Pick player to remove from the list");
             printPlayerPool(playerList);
-            System.out.println("Enter " + (playerList.size()+1) + " to exit");
-            temp = scanner.nextInt()-1;
-            if(temp == playerList.size()){
+            System.out.println("Enter " + (playerList.size() + 1) + " to exit");
+            temp = scanner.nextInt() - 1;
+            if (temp == playerList.size()) {
                 break;
             } else if (temp >= 0 && temp < playerList.size()) {
                 session.beginTransaction();
                 session.delete(playerList.get(temp));
                 session.getTransaction().commit();
-            }else {
+            } else {
                 System.out.println("Entered wrong index try again");
             }
         }

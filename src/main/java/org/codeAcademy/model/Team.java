@@ -1,6 +1,7 @@
 package org.codeAcademy.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ public class Team {
     private String name;
 
     @Column(name = "budget")
-    private double budget;
+    private BigDecimal budget;
 
     @Column(name = "country")
     private String country;
@@ -44,11 +45,11 @@ public class Team {
         this.name = name;
     }
 
-    public double getBudget() {
+    public BigDecimal getBudget() {
         return budget;
     }
 
-    public void setBudget(double budget) {
+    public void setBudget(BigDecimal budget) {
         this.budget = budget;
     }
 
