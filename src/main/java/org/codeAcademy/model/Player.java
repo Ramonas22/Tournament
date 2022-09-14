@@ -31,7 +31,7 @@ public class Player {
     private boolean signContract = false;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "team_id", nullable = false)
+    @JoinColumn(name = "team_id")
     private Team team;
 
     public Player() {
@@ -92,6 +92,7 @@ public class Player {
     public void setSignContract(boolean signContract) {
         this.signContract = signContract;
     }
+
 
     public Team getTeam() {
         return team;
