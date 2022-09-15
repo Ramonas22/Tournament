@@ -25,6 +25,7 @@
         <!-- <mapping class="classpath"/> -->
         <mapping class="org.codeAcademy.model.Player"/>
         <mapping class="org.codeAcademy.model.Team"/>
+        <mapping class="org.codeAcademy.model.Match"/>
 
     </session-factory>
 </hibernate-configuration>

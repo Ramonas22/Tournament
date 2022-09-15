@@ -108,12 +108,13 @@ public class TeamService {
         PlayerServices playerServices = new PlayerServices();
 
         for (int i = 0; i < teamList.size(); i++) {
-            System.out.println(" [ "+ (i+1)+ " ] " + teamList.get(i).getName() + " "
+            System.out.println("[ "+ (i+1)+ " ] " + teamList.get(i).getName() + " "
                     + teamList.get(i).getBudget() + " " + teamList.get(i).getCountry());
             if(teamList.get(i).getPlayers().size()!=0){
                 System.out.println("Players in team: ");
                 playerServices.printPlayerPool(teamList.get(i).getPlayers());
             }
+            System.out.print("\n----------------------------------------\n");
         }
     }
 
@@ -185,10 +186,13 @@ public class TeamService {
 
             if (temp >= 0 && temp < playerPool.size()) {
                 playerPool.get(temp).setSignContract(true);
+
                 team.getPlayers().add(playerPool.get(temp));
+                playerPool.get(temp).setTeam(team);
 
                 session.beginTransaction();
                 session.save(team);
+                session.save(playerPool.get(temp));
                 session.getTransaction().commit();
 
             } else if (temp == playerPool.size()) {

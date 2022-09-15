@@ -1,6 +1,8 @@
 package org.codeAcademy;
 
+import org.codeAcademy.model.Match;
 import org.codeAcademy.model.Team;
+import org.codeAcademy.services.MatchServices;
 import org.codeAcademy.services.PlayerServices;
 import org.codeAcademy.services.TeamService;
 import org.hibernate.Session;
@@ -19,21 +21,33 @@ public class Main {
         //Testing
         PlayerServices playerServices = new PlayerServices();
         TeamService teamService = new TeamService();
+        MatchServices matchServices = new MatchServices();
 
         List<Team> teamList = teamService.getTeams(session);
         //teamService.createTeam(session);
-       // teamService.createTeam(session);
+       //teamService.createTeam(session);
         //teamService.updateTeam(session);
         //teamService.removeTeamFromPool(session);
         //teamService.printTeams(teamService.getTeams(session));
+        //matchServices.playMatch(session);
+        //matchServices.playMatch(session);
+       // matchServices.playMatch(session);
 
-        //teamService.pickPlayersForTeam(session);
+
+        List<Match> matchList = matchServices.getMatchesPlayed(session);
+
+        matchServices.eraseMatchHistory(session, matchList);
+        matchServices.showMatchesPlayed(matchList);
 
         //playerServices.addPlayerToThePool(session);
         //playerServices.addPlayerToThePool(session);
         //playerServices.updatePlayerInfoFo(session);
         //playerServices.removePlayerFromThePool(session);
 
-        playerServices.printPlayerPool(playerServices.getPlayerPool(session));
+        //teamService.pickPlayersForTeam(session);
+
+        //teamService.printTeams(teamList);
+
+        //playerServices.printPlayerPool(playerServices.getPlayerPool(session));
     }
 }

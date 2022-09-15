@@ -11,7 +11,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id")
-    private long id;
+    private long teamId;
 
     @Column(name = "name")
     private String name;
@@ -22,19 +22,20 @@ public class Team {
     @Column(name = "country")
     private String country;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "team")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "team", fetch = FetchType.LAZY)
     @Column(name = "players")
     private List<Player> players;
+
 
     public Team() {
     }
 
-    public long getId() {
-        return id;
+    public long getTeamId() {
+        return teamId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setTeamId(long teamId) {
+        this.teamId = teamId;
     }
 
     public String getName() {

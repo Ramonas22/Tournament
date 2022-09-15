@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Player")
+@Table(name = "player")
 public class Player {
 
     @Id
@@ -30,7 +30,7 @@ public class Player {
     @Column(name = "sign_contract")
     private boolean signContract = false;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
 
