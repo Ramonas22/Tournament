@@ -31,12 +31,12 @@ public class Main {
         //teamService.printTeams(teamService.getTeams(session));
         //matchServices.playMatch(session);
         //matchServices.playMatch(session);
-       // matchServices.playMatch(session);
+        matchServices.playMatch(session);
 
 
         List<Match> matchList = matchServices.getMatchesPlayed(session);
 
-        matchServices.eraseMatchHistory(session, matchList);
+        //matchServices.eraseMatchHistory(session, matchList);
         matchServices.showMatchesPlayed(matchList);
 
         //playerServices.addPlayerToThePool(session);

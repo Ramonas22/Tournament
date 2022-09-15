@@ -72,12 +72,12 @@ public class MatchServices {
     }
 
     public void eraseMatchHistory(Session session,List<Match> matches){
+        session.beginTransaction();
 
         for (Match match:matches
                 ) {
-            session.beginTransaction();
             session.delete(match);
-            session.getTransaction().commit();
         }
+        session.getTransaction().commit();
     }
 }
