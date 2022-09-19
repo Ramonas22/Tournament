@@ -25,6 +25,10 @@ public class Tournament {
     @JoinColumn(name = "tournament_matches")
     private List<Match> matches = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "tournament_teams")
+    private List<Team> teams = new ArrayList<>();
+
     public Tournament() {
     }
 
@@ -55,8 +59,15 @@ public class Tournament {
     public List<Match> getMatches() {
         return matches;
     }
-
     public void setMatches(List<Match> matches) {
         this.matches = matches;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 }
