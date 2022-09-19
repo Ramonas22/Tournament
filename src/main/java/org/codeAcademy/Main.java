@@ -2,6 +2,7 @@ package org.codeAcademy;
 
 import org.codeAcademy.model.Match;
 import org.codeAcademy.model.Team;
+import org.codeAcademy.model.Tournament;
 import org.codeAcademy.services.MatchServices;
 import org.codeAcademy.services.PlayerServices;
 import org.codeAcademy.services.TeamService;
@@ -23,7 +24,12 @@ public class Main {
         TeamService teamService = new TeamService();
         MatchServices matchServices = new MatchServices();
 
+
         List<Team> teamList = teamService.getTeams(session);
+        List<Match> matchList = matchServices.getMatchesPlayed(session);
+        Tournament tempTournament = new Tournament();
+
+
         //teamService.createTeam(session);
        //teamService.createTeam(session);
         //teamService.updateTeam(session);
@@ -31,13 +37,12 @@ public class Main {
         //teamService.printTeams(teamService.getTeams(session));
         //matchServices.playMatch(session);
         //matchServices.playMatch(session);
-        matchServices.playMatch(session);
+        //matchServices.playMatch(session);
 
 
-        List<Match> matchList = matchServices.getMatchesPlayed(session);
 
         //matchServices.eraseMatchHistory(session, matchList);
-        matchServices.showMatchesPlayed(matchList);
+        //matchServices.showMatchesPlayed(matchList);
 
         //playerServices.addPlayerToThePool(session);
         //playerServices.addPlayerToThePool(session);
