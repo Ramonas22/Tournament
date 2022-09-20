@@ -4,6 +4,8 @@ package org.codeAcademy.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -35,7 +37,7 @@ public class Tournament {
     private List<Team> teams = new ArrayList<>();
 
     @Column(name = "team_points")
-    private long points=0;
+    private HashMap<Team,Integer> teams_points = new HashMap<>();
 
     public Tournament() {
     }
@@ -79,11 +81,11 @@ public class Tournament {
         this.teams = teams;
     }
 
-    public long getPoints() {
-        return points;
+    public HashMap<Team, Integer> getTeams_points() {
+        return teams_points;
     }
 
-    public void setPoints(long points) {
-        this.points = points;
+    public void setTeams_points(HashMap<Team, Integer> teams_points) {
+        this.teams_points = teams_points;
     }
 }

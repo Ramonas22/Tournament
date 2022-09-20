@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class TournamentService {
 
@@ -116,6 +115,18 @@ public class TournamentService {
         Scanner scanner = new Scanner(System.in);
         MatchServices matchServices = new MatchServices();
 
+        List<Match> matches;
+
+        matchServices.playMatch(session);
+        matches = matchServices.getMatchesPlayed(session);
+        matches.get(matches.size()-1).setFriendlyMatch(false);
+        tournament.getMatches().add(matches.get(matches.size()-1));
+
+        calculateTournamentPoints(tournament,matches.get(matches.size()-1));
+
+        session.beginTransaction();
+        session.update(tournament);
+        session.getTransaction().commit();
     }
 
     public void pickTeamsForTournament(Session session, Tournament tournament){
@@ -135,6 +146,7 @@ public class TournamentService {
 
             if(temp> 0 && temp < teams.size()){
                 tournament.getTeams().add(teams.get(temp));
+                tournament.getTeams_points().put(teams.get(temp), 0);
             }else {
                 System.out.println("Entered wrong value try again");
             }
@@ -159,6 +171,7 @@ public class TournamentService {
 
             if(temp> 0 && temp < tournament.getTeams().size()){
                 tournament.getTeams().remove(tournament.getTeams().get(temp));
+                tournament.getTeams_points().remove(tournament.getTeams().get(temp));
             }else {
                 System.out.println("Entered wrong value try again");
             }
@@ -169,4 +182,13 @@ public class TournamentService {
         session.getTransaction().commit();
     }
 
+    private void calculateTournamentPoints(Tournament tournament, Match match){
+        if(match.getHomeTeamScore() > match.getAwayTeamScore()){
+            tournament.getTeams_points().computeIfPresent(match.getHomeTeam(), (team, points) -> points + 5);
+            tournament.getTeams_points().computeIfPresent(match.getAwayTeam(), (team, points) -> points + 3);
+        }else {
+            tournament.getTeams_points().computeIfPresent(match.getHomeTeam(), (team, points) -> points + 3);
+            tournament.getTeams_points().computeIfPresent(match.getAwayTeam(), (team, points) -> points + 5);
+        }
+    }
 }
