@@ -23,7 +23,6 @@ public class Match {
     @Column(name = "home_team_score")
     private int homeTeamScore;
 
-
     @Column(name = "away_team_score")
     private int awayTeamScore;
 
