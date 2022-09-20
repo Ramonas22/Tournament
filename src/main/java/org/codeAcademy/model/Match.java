@@ -26,6 +26,9 @@ public class Match {
     @Column(name = "away_team_score")
     private int awayTeamScore;
 
+    @Column(name = "is_match_friendly")
+    private boolean friendlyMatch = true;
+
 
     public Match() {
     }
@@ -70,4 +73,11 @@ public class Match {
         this.awayTeamScore = awayTeamScore;
     }
 
+    public boolean isFriendlyMatch() {
+        return friendlyMatch;
+    }
+
+    public void setFriendlyMatch(boolean friendlyMatch) {
+        this.friendlyMatch = friendlyMatch;
+    }
 }

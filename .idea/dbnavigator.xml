@@ -29,7 +29,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="6debea18-5256-4132-a475-bdaba121f304">
-      <console name="Connection" type="STANDARD" schema="information_schema" session="Main"><![CDATA[select * from public.tournament]]></console>
+      <console name="Connection" type="STANDARD" schema="information_schema" session="Main"><![CDATA[select * from public.match]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

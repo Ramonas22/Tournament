@@ -1,11 +1,14 @@
 package org.codeAcademy.services;
 
+import org.codeAcademy.model.Match;
+import org.codeAcademy.model.Team;
 import org.codeAcademy.model.Tournament;
 import org.hibernate.Session;
 
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class TournamentService {
 
@@ -107,6 +110,63 @@ public class TournamentService {
                 session.beginTransaction().commit();
             }
         }while (temp != tournamentList.size());
+    }
+
+    public void playMatchInTheTournament(Session session, Tournament tournament){
+        Scanner scanner = new Scanner(System.in);
+        MatchServices matchServices = new MatchServices();
+
+    }
+
+    public void pickTeamsForTournament(Session session, Tournament tournament){
+        Scanner scanner = new Scanner(System.in);
+        TeamService teamService = new TeamService();
+
+        List<Team> teams;
+        int temp;
+
+        do{
+            teams = teamService.getTeams(session);
+            teams.removeAll(tournament.getTeams());
+            System.out.println("Pick team from the list to add to tournament ");
+            teamService.printTeams(teams);
+            System.out.println("[ " + teams.size() +" ] To save and exit");
+            temp = scanner.nextInt()-1;
+
+            if(temp> 0 && temp < teams.size()){
+                tournament.getTeams().add(teams.get(temp));
+            }else {
+                System.out.println("Entered wrong value try again");
+            }
+        }while (temp != teams.size());
+
+        session.beginTransaction();
+        session.update(tournament);
+        session.getTransaction().commit();
+    }
+
+    public void removeTeamFromTournament(Session session, Tournament tournament){
+        Scanner scanner = new Scanner(System.in);
+
+        TeamService teamService = new TeamService();
+
+        int temp;
+        do{
+            System.out.println("Pick a team to be removed from tournament");
+            teamService.printTeams(tournament.getTeams());
+            System.out.println("[ " + tournament.getTeams().size() + " ] To save exit");
+            temp = scanner.nextInt()-1;
+
+            if(temp> 0 && temp < tournament.getTeams().size()){
+                tournament.getTeams().remove(tournament.getTeams().get(temp));
+            }else {
+                System.out.println("Entered wrong value try again");
+            }
+        }while (temp != tournament.getTeams().size());
+
+        session.beginTransaction();
+        session.update(tournament);
+        session.getTransaction().commit();
     }
 
 }

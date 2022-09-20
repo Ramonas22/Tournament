@@ -25,9 +25,17 @@ public class Tournament {
     @JoinColumn(name = "tournament_matches")
     private List<Match> matches = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "tournament_teams")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "tournament_teams",
+        joinColumns = {
+            @JoinColumn(name = "tournament_id")},
+            inverseJoinColumns = {
+            @JoinColumn(name = "team_id")}
+    )
     private List<Team> teams = new ArrayList<>();
+
+    @Column(name = "team_points")
+    private long points=0;
 
     public Tournament() {
     }
@@ -69,5 +77,13 @@ public class Tournament {
 
     public void setTeams(List<Team> teams) {
         this.teams = teams;
+    }
+
+    public long getPoints() {
+        return points;
+    }
+
+    public void setPoints(long points) {
+        this.points = points;
     }
 }

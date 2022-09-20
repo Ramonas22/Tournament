@@ -26,6 +26,10 @@ public class Team {
     @Column(name = "players")
     private List<Player> players;
 
+    @ManyToMany(mappedBy = "teams")
+    @Column(name = "teams")
+    private List<Tournament> tournaments;
+
 
     public Team() {
     }
