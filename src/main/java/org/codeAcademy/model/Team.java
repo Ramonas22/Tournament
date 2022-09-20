@@ -1,13 +1,14 @@
 package org.codeAcademy.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Table(name = "team")
-public class Team {
-
+public class Team implements Serializable {
+    private static final long serialVersionUID = -6115856023650539605L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id")
@@ -72,5 +73,13 @@ public class Team {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public List<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(List<Tournament> tournaments) {
+        this.tournaments = tournaments;
     }
 }

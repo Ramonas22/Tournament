@@ -6,6 +6,7 @@ import org.codeAcademy.model.Tournament;
 import org.codeAcademy.services.MatchServices;
 import org.codeAcademy.services.PlayerServices;
 import org.codeAcademy.services.TeamService;
+import org.codeAcademy.services.TournamentService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -23,15 +24,16 @@ public class Main {
         PlayerServices playerServices = new PlayerServices();
         TeamService teamService = new TeamService();
         MatchServices matchServices = new MatchServices();
+        TournamentService tournamentService = new TournamentService();
 
 
-        List<Team> teamList = teamService.getTeams(session);
-        List<Match> matchList = matchServices.getMatchesPlayed(session);
-        Tournament tempTournament = new Tournament();
+        //List<Team> teamList = teamService.getTeams(session);
+       // List<Match> matchList = matchServices.getMatchesPlayed(session);
+        List<Tournament> tournamentList = tournamentService.getAllRegisteredTournament(session);
 
 
         //teamService.createTeam(session);
-       //teamService.createTeam(session);
+        //teamService.createTeam(session);
         //teamService.updateTeam(session);
         //teamService.removeTeamFromPool(session);
         //teamService.printTeams(teamService.getTeams(session));
@@ -46,6 +48,9 @@ public class Main {
 
         //playerServices.addPlayerToThePool(session);
         //playerServices.addPlayerToThePool(session);
+        //playerServices.addPlayerToThePool(session);
+        //playerServices.addPlayerToThePool(session);
+       // playerServices.addPlayerToThePool(session);
         //playerServices.updatePlayerInfoFo(session);
         //playerServices.removePlayerFromThePool(session);
 
@@ -54,5 +59,25 @@ public class Main {
         //teamService.printTeams(teamList);
 
         //playerServices.printPlayerPool(playerServices.getPlayerPool(session));
+
+        //tournamentService.registerTournament(session);
+       // tournamentService.registerTournament(session);
+
+       // tournamentList = tournamentService.getAllRegisteredTournament(session);
+
+        //tournamentService.tournamentPrinter(tournamentList);
+
+        //tournamentService.updateTournamentInfo(session);
+
+       // tournamentList = tournamentService.getAllRegisteredTournament(session);
+
+        //tournamentService.pickTeamsForTournament(session, tournamentList.get(0));
+        //tournamentService.removeTeamFromTournament(session, tournamentList.get(0));
+        //tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
+        //tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
+        //tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
+       // tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
+
+
     }
 }

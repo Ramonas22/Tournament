@@ -2,10 +2,10 @@ package org.codeAcademy.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -34,9 +34,14 @@ public class Tournament {
             inverseJoinColumns = {
             @JoinColumn(name = "team_id")}
     )
+    @Embedded
     private List<Team> teams = new ArrayList<>();
 
-    @Column(name = "team_points")
+    @ElementCollection
+    @CollectionTable(name = "team_points_mapping",
+    joinColumns = {@JoinColumn(name ="team_id", referencedColumnName = "points")})
+    @MapKeyColumn(name = "team")
+    @Column(name = "teams_points")
     private HashMap<Team,Integer> teams_points = new HashMap<>();
 
     public Tournament() {

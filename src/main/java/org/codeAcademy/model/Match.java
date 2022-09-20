@@ -2,6 +2,7 @@ package org.codeAcademy.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "match")

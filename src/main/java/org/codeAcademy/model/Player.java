@@ -1,12 +1,13 @@
 package org.codeAcademy.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "player")
-public class Player {
-
+public class Player implements Serializable {
+    private static final long serialVersionUID = 1527558370216412171L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "player_id")
