@@ -1,7 +1,5 @@
 package org.codeAcademy;
 
-import org.codeAcademy.model.Match;
-import org.codeAcademy.model.Team;
 import org.codeAcademy.model.Tournament;
 import org.codeAcademy.services.MatchServices;
 import org.codeAcademy.services.PlayerServices;
@@ -60,7 +58,7 @@ public class Main {
 
         //playerServices.printPlayerPool(playerServices.getPlayerPool(session));
 
-        //tournamentService.registerTournament(session);
+       // tournamentService.registerTournament(session);
        // tournamentService.registerTournament(session);
 
        // tournamentList = tournamentService.getAllRegisteredTournament(session);
@@ -69,14 +67,20 @@ public class Main {
 
         //tournamentService.updateTournamentInfo(session);
 
-       // tournamentList = tournamentService.getAllRegisteredTournament(session);
 
-        //tournamentService.pickTeamsForTournament(session, tournamentList.get(0));
-        //tournamentService.removeTeamFromTournament(session, tournamentList.get(0));
+       // tournamentList.get(0).getTeams_points().clear();
+        //tournamentService.updateTournamentInfo(session);
+
+        tournamentList = tournamentService.getAllRegisteredTournament(session);
+
+      //  tournamentService.removeTeamFromTournament(session, tournamentList.get(0));
+       //tournamentService.pickTeamsForTournament(session, tournamentList.get(0));
+
+
+        tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
+        tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
         //tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
         //tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
-        //tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
-       // tournamentService.playMatchInTheTournament(session, tournamentList.get(0));
 
 
     }

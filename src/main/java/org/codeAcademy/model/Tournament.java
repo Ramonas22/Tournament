@@ -40,9 +40,9 @@ public class Tournament {
     @ElementCollection
     @CollectionTable(name = "team_points_mapping",
     joinColumns = {@JoinColumn(name ="team_id", referencedColumnName = "points")})
-    @MapKeyColumn(name = "team")
+    @MapKeyColumn(name = "team_id")
     @Column(name = "teams_points")
-    private HashMap<Team,Integer> teams_points = new HashMap<>();
+    private HashMap<Long,Integer> teams_points = new HashMap<>();
 
     public Tournament() {
     }
@@ -86,11 +86,11 @@ public class Tournament {
         this.teams = teams;
     }
 
-    public HashMap<Team, Integer> getTeams_points() {
+    public HashMap<Long, Integer> getTeams_points() {
         return teams_points;
     }
 
-    public void setTeams_points(HashMap<Team, Integer> teams_points) {
+    public void setTeams_points(HashMap<Long, Integer> teams_points) {
         this.teams_points = teams_points;
     }
 }
