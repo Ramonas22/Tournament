@@ -8,7 +8,7 @@
 
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Tournament1</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Tournament</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">1214</property>
 
@@ -27,6 +27,7 @@
         <mapping class="org.codeAcademy.model.Team"/>
         <mapping class="org.codeAcademy.model.Match"/>
         <mapping class="org.codeAcademy.model.Tournament"/>
+        <mapping class="org.codeAcademy.model.Leaderboard"/>
 
     </session-factory>
 </hibernate-configuration>

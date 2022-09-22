@@ -57,8 +57,6 @@ public class MatchServices {
         return session.createQuery("from Match").list();
     }
 
-
-
     public void showMatchesPlayed(List<Match> matches){
 
         for (Match match:matches

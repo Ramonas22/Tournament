@@ -2,10 +2,9 @@ package org.codeAcademy.model;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Entity
@@ -34,7 +33,6 @@ public class Tournament {
             inverseJoinColumns = {
             @JoinColumn(name = "team_id")}
     )
-    @Embedded
     private List<Team> teams = new ArrayList<>();
 
     @ElementCollection
@@ -42,7 +40,11 @@ public class Tournament {
     joinColumns = {@JoinColumn(name ="team_id", referencedColumnName = "points")})
     @MapKeyColumn(name = "team_id")
     @Column(name = "teams_points")
-    private HashMap<Long,Integer> teams_points = new HashMap<>();
+    private LinkedHashMap<Long,Integer> teams_points = new LinkedHashMap<>();
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "leaderboard_id")
+    private Leaderboard leaderboard;
 
     public Tournament() {
     }
@@ -86,11 +88,11 @@ public class Tournament {
         this.teams = teams;
     }
 
-    public HashMap<Long, Integer> getTeams_points() {
+    public LinkedHashMap<Long, Integer> getTeams_points() {
         return teams_points;
     }
 
-    public void setTeams_points(HashMap<Long, Integer> teams_points) {
+    public void setTeams_points(LinkedHashMap<Long, Integer> teams_points) {
         this.teams_points = teams_points;
     }
 }

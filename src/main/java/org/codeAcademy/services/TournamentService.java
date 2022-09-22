@@ -6,8 +6,7 @@ import org.codeAcademy.model.Tournament;
 import org.hibernate.Session;
 
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class TournamentService {
 
@@ -121,6 +120,7 @@ public class TournamentService {
         MatchServices matchServices = new MatchServices();
 
         List<Match> matches;
+        Map<Long,Integer> tempMapOrg;
 
         matchServices.playMatch(session, tournament);
         matches = matchServices.getMatchesPlayed(session);
@@ -128,6 +128,15 @@ public class TournamentService {
         tournament.getMatches().add(matches.get(matches.size() - 1));
 
         tournament = calculateTournamentPoints(tournament, matches.get(matches.size() - 1));
+
+        //tournament.getTeams_points(). (sortByPoints(tournament.getTeams_points()));
+        tempMapOrg = (sortByPoints(tournament.getTeams_points()));
+        tournament.getTeams_points().clear();
+        for (Map.Entry<Long, Integer> tempMap: tempMapOrg.entrySet()
+             ) {
+            tournament.getTeams_points().put(tempMap.getKey(),tempMap.getValue());
+        }
+
 
         session.beginTransaction();
         session.update(tournament);
@@ -197,27 +206,31 @@ public class TournamentService {
         if (match.getHomeTeamScore() > match.getAwayTeamScore()) {
                 tournament.getTeams_points().computeIfPresent(match.getHomeTeam().getTeamId(), (team, points) -> points + 5);
                 tournament.getTeams_points().computeIfPresent(match.getAwayTeam().getTeamId(), (team, points) -> points + 3);
-                //tournament.getTeams_points().replace(match.getHomeTeam(), tournament.getTeams_points().get(match.getHomeTeam()) + 5);
-                //tournament.getTeams_points().replace(match.getAwayTeam(), tournament.getTeams_points().get(match.getAwayTeam()) + 3);
 
-                // tournament.getTeams_points().put(match.getHomeTeam(), tournament.getTeams_points().get(match.getHomeTeam()) + 5);
-                //tournament.getTeams_points().put(match.getAwayTeam(), tournament.getTeams_points().get(match.getAwayTeam()) + 3);
-                //tournament.getTeams_points().merge(match.getHomeTeam(), 5,Integer::sum);
-                //tournament.getTeams_points().merge(match.getAwayTeam(), 3,Integer::sum);
             } else {
-
-                //tournament.getTeams_points().replace(match.getHomeTeam(), tournament.getTeams_points().get(match.getHomeTeam()) + 3);
-                //tournament.getTeams_points().replace(match.getAwayTeam(), tournament.getTeams_points().get(match.getAwayTeam()) + 5);
-
                 tournament.getTeams_points().computeIfPresent(match.getHomeTeam().getTeamId(), (team, points) -> points + 3);
                 tournament.getTeams_points().computeIfPresent(match.getAwayTeam().getTeamId(), (team, points) -> points + 5);
 
-
-                //tournament.getTeams_points().put(match.getAwayTeam(), tournament.getTeams_points().get(match.getAwayTeam()) + 5);
-                //tournament.getTeams_points().put(match.getHomeTeam(), tournament.getTeams_points().get(match.getHomeTeam()) + 3);
-                //tournament.getTeams_points().merge(match.getHomeTeam(), 3,Integer::sum);
-                //tournament.getTeams_points().merge(match.getAwayTeam(), 5,Integer::sum);
         }
         return tournament;
+    }
+
+    private HashMap<Long, Integer> sortByPoints(HashMap<Long,Integer> unsortedHashmap){
+
+        List<Map.Entry<Long, Integer>> list = new LinkedList<Map.Entry<Long, Integer>>(unsortedHashmap.entrySet());
+
+        list.sort(new Comparator<Map.Entry<Long, Integer>>() {
+            @Override
+            public int compare(Map.Entry<Long, Integer> o1, Map.Entry<Long, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+        HashMap <Long, Integer> sortedHashmap = new LinkedHashMap<Long,Integer>();
+        for (Map.Entry<Long,Integer> temp:list
+        ) {
+            sortedHashmap.put(temp.getKey(), temp.getValue());
+        }
+
+        return sortedHashmap;
     }
 }
