@@ -120,7 +120,7 @@ public class TournamentService {
         MatchServices matchServices = new MatchServices();
 
         List<Match> matches;
-        Map<Long,Integer> tempMapOrg;
+        Map<Long, Integer> tempMapOrg;
 
         matchServices.playMatch(session, tournament);
         matches = matchServices.getMatchesPlayed(session);
@@ -132,9 +132,9 @@ public class TournamentService {
         //tournament.getTeams_points(). (sortByPoints(tournament.getTeams_points()));
         tempMapOrg = (sortByPoints(tournament.getTeams_points()));
         tournament.getTeams_points().clear();
-        for (Map.Entry<Long, Integer> tempMap: tempMapOrg.entrySet()
-             ) {
-            tournament.getTeams_points().put(tempMap.getKey(),tempMap.getValue());
+        for (Map.Entry<Long, Integer> tempMap : tempMapOrg.entrySet()
+        ) {
+            tournament.getTeams_points().put(tempMap.getKey(), tempMap.getValue());
         }
 
 
@@ -204,18 +204,18 @@ public class TournamentService {
 
     private Tournament calculateTournamentPoints(Tournament tournament, Match match) {
         if (match.getHomeTeamScore() > match.getAwayTeamScore()) {
-                tournament.getTeams_points().computeIfPresent(match.getHomeTeam().getTeamId(), (team, points) -> points + 5);
-                tournament.getTeams_points().computeIfPresent(match.getAwayTeam().getTeamId(), (team, points) -> points + 3);
+            tournament.getTeams_points().computeIfPresent(match.getHomeTeam().getTeamId(), (team, points) -> points + 5);
+            tournament.getTeams_points().computeIfPresent(match.getAwayTeam().getTeamId(), (team, points) -> points + 3);
 
-            } else {
-                tournament.getTeams_points().computeIfPresent(match.getHomeTeam().getTeamId(), (team, points) -> points + 3);
-                tournament.getTeams_points().computeIfPresent(match.getAwayTeam().getTeamId(), (team, points) -> points + 5);
+        } else {
+            tournament.getTeams_points().computeIfPresent(match.getHomeTeam().getTeamId(), (team, points) -> points + 3);
+            tournament.getTeams_points().computeIfPresent(match.getAwayTeam().getTeamId(), (team, points) -> points + 5);
 
         }
         return tournament;
     }
 
-    private HashMap<Long, Integer> sortByPoints(HashMap<Long,Integer> unsortedHashmap){
+    private HashMap<Long, Integer> sortByPoints(HashMap<Long, Integer> unsortedHashmap) {
 
         List<Map.Entry<Long, Integer>> list = new LinkedList<Map.Entry<Long, Integer>>(unsortedHashmap.entrySet());
 
@@ -225,12 +225,54 @@ public class TournamentService {
                 return (o2.getValue()).compareTo(o1.getValue());
             }
         });
-        HashMap <Long, Integer> sortedHashmap = new LinkedHashMap<Long,Integer>();
-        for (Map.Entry<Long,Integer> temp:list
+        HashMap<Long, Integer> sortedHashmap = new LinkedHashMap<Long, Integer>();
+        for (Map.Entry<Long, Integer> temp : list
         ) {
             sortedHashmap.put(temp.getKey(), temp.getValue());
         }
 
         return sortedHashmap;
+    }
+
+    public void singleTournamentServices(Session session) {
+        Scanner scanner = new Scanner(System.in);
+
+        List<Tournament> tournamentList;
+        Tournament tempTournament;
+        int temp;
+        boolean flag;
+
+            do {
+                tournamentList = getAllRegisteredTournament(session);
+                System.out.println("Pick tournament from the list");
+                tournamentPrinter(tournamentList);
+                System.out.println("[ " + (tournamentList.size() + 1) + " ] To Exit");
+                temp = scanner.nextInt() - 1;
+
+                if (temp >= 0 && temp < tournamentList.size()) {
+                    tempTournament = tournamentList.get(temp);
+                    flag = true;
+                    while (flag){
+                        System.out.println("""
+                                [ 1 ] Play match
+                                [ 2 ] Pick teams for tournament
+                                [ 3 ] Remove team from tournament
+                                [ 4 ] To exit
+                                """);
+                        switch (scanner.nextInt()){
+                            case 1 -> playMatchInTheTournament(session, tempTournament);
+                            case 2 -> pickTeamsForTournament(session, tempTournament);
+                            case 3 -> removeTeamFromTournament(session, tempTournament);
+                            case 4 -> flag = false;
+                            default -> System.out.println("Entered wrong command");
+                        }
+                    }
+                } else if (temp == tournamentList.size()) {
+                    break;
+                } else {
+                    System.out.println("Entered wrong command");
+                }
+            } while (temp != tournamentList.size());
+
     }
 }

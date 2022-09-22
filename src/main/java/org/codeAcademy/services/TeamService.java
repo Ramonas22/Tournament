@@ -37,11 +37,12 @@ public class TeamService {
     public void updateTeam(Session session){
         Scanner scanner = new Scanner(System.in);
 
-        List<Team> teamList = getTeams(session);
+        List<Team> teamList;
         int temp;
         Team team;
 
         while (true) {
+            teamList = getTeams(session);
             System.out.println("Pick team from list to update its information ");
             printTeams(teamList);
             System.out.println("Enter " + (teamList.size()+1) + " to exit");

@@ -98,12 +98,14 @@ public class PlayerServices {
             switch (temp) {
                 case 0 -> {
                     System.out.println("Enter name ");
+                    scanner.next();
                     playerTemp.setName(scanner.nextLine());
                     temp = -1;
                     break;
                 }
                 case 1 -> {
                     System.out.println("Enter surname");
+                    scanner.next();
                     playerTemp.setSurname(scanner.nextLine());
                     temp = -1;
                     break;
@@ -205,7 +207,7 @@ public class PlayerServices {
             if (playerTemp.isSignContract()) {
                 System.out.print(" player has contract\n");
             } else {
-                System.out.print(" player is open for proposal\n");
+                System.out.print(" player is open for proposal\n\n\n");
             }
         }
     }
@@ -213,10 +215,11 @@ public class PlayerServices {
     public void removePlayerFromThePool(Session session) {
         Scanner scanner = new Scanner(System.in);
 
-        List<Player> playerList = getPlayerPool(session);
+        List<Player> playerList;
         int temp;
 
         while (true) {
+            playerList = getPlayerPool(session);
             System.out.println("Pick player to remove from the list");
             printPlayerPool(playerList);
             System.out.println("Enter " + (playerList.size() + 1) + " to exit");

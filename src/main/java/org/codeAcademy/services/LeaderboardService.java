@@ -44,68 +44,95 @@ public class LeaderboardService {
         return session.createQuery("from leaderboard").list();
     }
 
-    public void updateLeaderboard(Session session,Leaderboard leaderboard){
+    public void updateLeaderboard(Session session){
         Scanner scanner = new Scanner(System.in);
 
         TournamentService tournamentService = new TournamentService();
-        List<Tournament> tempTournament;
 
+        List<Tournament> tempTournament;
+        List<Leaderboard> leaderboardList;
+        Leaderboard leaderboard;
         int temp;
 
-        do{
-            System.out.printf("""
-                    Enter option from the list
-                    [ 1 ] Update leaderboard title %s
-                    [ 2 ] Remove tournaments from leaderboard
-                    [ 3 ] Add tournaments to leaderboard
-                    [ 4 ] Exit
-                    """, leaderboard.getTitle());
+
+        while (true){
+            leaderboardList = getLeaderboards(session);
+            System.out.println("Pick which leaderboard to update");
+            printLeaderboards(leaderboardList);
+            System.out.println("[ " + (leaderboardList.size() + 1) + " ] To exit");
             temp = scanner.nextInt()-1;
 
-            if(temp == 0){
-                System.out.println("Enter new leaderboard title");
-                leaderboard.setTitle(scanner.nextLine());
-            } else if (temp == 1) {
-                while(true) {
-                    System.out.println("Pick a tournament to remove from leaderboard");
-                    tournamentService.tournamentPrinter(leaderboard.getTournaments());
-                    System.out.println("[ " + (leaderboard.getTournaments().size()+1)+" ] to exit");
-                    temp = scanner.nextInt()-1;
+            if(temp == leaderboardList.size()){
+                break;
+            }else if(temp >= 0 && temp < leaderboardList.size()){
+                leaderboard = leaderboardList.get(temp);
+                do {
+                    System.out.printf("""
+                        Enter option from the list
+                        [ 1 ] Update leaderboard title %s
+                        [ 2 ] Remove tournaments from leaderboard
+                        [ 3 ] Add tournaments to leaderboard
+                        [ 4 ] Exit
+                        """, leaderboard.getTitle());
+                    temp = scanner.nextInt() - 1;
 
-                    if (temp == leaderboard.getTournaments().size()){
-                        break;
-                    }else if(temp >= leaderboard.getTournaments().size() && temp < leaderboard.getTournaments().size()){
-                        leaderboard.getTournaments().remove(leaderboard.getTournaments().get(temp));
-                    } else {
-                        System.out.println("Entered wrong command");
-                    }
-                }
-                temp = 1;
-            }if(temp == 2){
-                while(true) {
-                    System.out.println("Pick a tournament to add to leaderboard");
-                    tempTournament = tournamentService.getAllRegisteredTournament(session);
-                    tempTournament.removeAll(leaderboard.getTournaments());
-                    tournamentService.tournamentPrinter(tempTournament);
-                    System.out.println("[ " + (tempTournament.size()+1)+" ] to exit");
-                    temp = scanner.nextInt()-1;
+                    if (temp == 0) {
+                        System.out.println("Enter new leaderboard title");
+                        leaderboard.setTitle(scanner.nextLine());
+                        session.beginTransaction();
+                        session.update(leaderboard);
+                        session.beginTransaction().commit();
+                    } else if (temp == 1) {
+                        while (true) {
+                            System.out.println("Pick a tournament to remove from leaderboard");
+                            tournamentService.tournamentPrinter(leaderboard.getTournaments());
+                            System.out.println("[ " + (leaderboard.getTournaments().size() + 1) + " ] to exit");
+                            temp = scanner.nextInt() - 1;
 
-                    if (temp == tempTournament.size()){
-                        break;
-                    }else if(temp >= leaderboard.getTournaments().size() && temp < leaderboard.getTournaments().size()){
-                        leaderboard.getTournaments().add(tempTournament.get(temp));
-                    } else {
-                        System.out.println("Entered wrong command");
+                            if (temp == leaderboard.getTournaments().size()) {
+                                break;
+                            } else if (temp >= leaderboard.getTournaments().size() && temp < leaderboard.getTournaments().size()) {
+                                leaderboard.getTournaments().remove(leaderboard.getTournaments().get(temp));
+                                session.beginTransaction();
+                                session.update(leaderboard);
+                                session.beginTransaction().commit();
+                            } else {
+                                System.out.println("Entered wrong command");
+                            }
+                        }
+                        temp = 1;
                     }
-                }
-                temp = 2;
+                    if (temp == 2) {
+                        while (true) {
+                            System.out.println("Pick a tournament to add to leaderboard");
+                            tempTournament = tournamentService.getAllRegisteredTournament(session);
+                            tempTournament.removeAll(leaderboard.getTournaments());
+                            tournamentService.tournamentPrinter(tempTournament);
+                            System.out.println("[ " + (tempTournament.size() + 1) + " ] to exit");
+                            temp = scanner.nextInt() - 1;
+
+                            if (temp == tempTournament.size()) {
+                                break;
+                            } else if (temp >= leaderboard.getTournaments().size() && temp < leaderboard.getTournaments().size()) {
+                                leaderboard.getTournaments().add(tempTournament.get(temp));
+                                session.beginTransaction();
+                                session.update(leaderboard);
+                                session.beginTransaction().commit();
+                            } else {
+                                System.out.println("Entered wrong command");
+                            }
+                        }
+                        temp = 2;
+                    } else {
+                        System.out.println("Entered wrong option");
+                    }
+                } while (temp != 3);
+
             }else {
-                System.out.println("Entered wrong option");
+                System.out.println("Entered wrong command try again");
             }
-        }while (temp != 3);
-        session.beginTransaction();
-        session.update(leaderboard);
-        session.beginTransaction().commit();
+        }
+
 
     }
 
@@ -125,34 +152,54 @@ public class LeaderboardService {
             if(temp == leaderboardList.size()){
                 break;
             }else if(temp >= 0 && temp < leaderboardList.size()){
-                leaderboardList.remove(leaderboardList.get(temp));
+                session.beginTransaction();
+                session.delete(leaderboardList.get(temp));
+                session.getTransaction().commit();
+            }else {
+                System.out.println("Entered wrong command try again");
+            }
+        }
+    }
+
+    public void printLeaderboards(List<Leaderboard> leaderboardList) {
+        for (int i = 0; i < leaderboardList.size(); i++) {
+            System.out.println("[ " + (i  + 1)+ " ] Leaderboard title " + leaderboardList.get(i).getTitle());
+        }
+    }
+
+    public void displayLeaderboard(Session session){
+        Scanner scanner = new Scanner(System.in);
+        List<Leaderboard> leaderboardList;
+        Leaderboard leaderboard;
+        int temp;
+
+        while (true){
+            leaderboardList = getLeaderboards(session);
+            System.out.println("Pick which leaderboard to display");
+            printLeaderboards(leaderboardList);
+            System.out.println("[ " + (leaderboardList.size() + 1) + " ] To exit");
+            temp = scanner.nextInt()-1;
+
+            if(temp == leaderboardList.size()){
+                break;
+            }else if(temp >= 0 && temp < leaderboardList.size()){
+                leaderboard = leaderboardList.get(temp);
+                System.out.println("Team name   :   points");
+                for (int i = 0; i < leaderboard.getTournaments().size();i++) {
+
+                    int finalI = i;
+                    Leaderboard finalLeaderboard = leaderboard;
+                    leaderboard.getTournaments().get(i).getTeams_points().forEach( (team_id , points) -> {
+                        System.out.println(" [ " + finalI + " ] "+
+                                finalLeaderboard.getTournaments().get(finalI).getTeams().stream().filter(team -> team.getTeamId() == team_id).findFirst().orElse(null).getName()
+                                + " : " + points);
+                    } );
+                    i++;
+                }
             }else {
                 System.out.println("Entered wrong command try again");
             }
         }
 
-        session.beginTransaction();
-        session.update(leaderboardList);
-        session.getTransaction().commit();
-    }
-
-    private void printLeaderboards(List<Leaderboard> leaderboardList) {
-        for (int i = 0; i < leaderboardList.size(); i++) {
-            System.out.println("[ " + i + " ] Leaderboard title " + leaderboardList.get(i).getTitle());
-        }
-    }
-
-    public void displayLeaderboard(Leaderboard leaderboard){
-        System.out.println("Team name   :   points");
-        for (int i = 0; i < leaderboard.getTournaments().size();i++) {
-
-            int finalI = i;
-            leaderboard.getTournaments().get(i).getTeams_points().forEach( (team_id , points) -> {
-                System.out.println(" [ " + finalI + " ] "+
-                leaderboard.getTournaments().get(finalI).getTeams().stream().filter(team -> team.getTeamId() == team_id).findFirst().orElse(null).getName()
-                + " : " + points);
-            } );
-            i++;
-        }
     }
 }

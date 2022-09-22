@@ -1,8 +1,12 @@
 package org.codeAcademy.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,12 +27,13 @@ public class Team {
     private String country;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "team", fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Column(name = "players")
-    private List<Player> players;
+    private List<Player> players = new ArrayList<>();
 
     @ManyToMany(mappedBy = "teams")
     @Column(name = "teams")
-    private List<Tournament> tournaments;
+    private List<Tournament> tournaments = new ArrayList<>();
 
 
     public Team() {

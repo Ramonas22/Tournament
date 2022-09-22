@@ -1,6 +1,9 @@
 package org.codeAcademy.model;
 
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,7 @@ public class Leaderboard {
     private String title;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "leaderboard",fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Column(name = "tournaments")
     private List<Tournament> tournaments = new ArrayList<>();
 
